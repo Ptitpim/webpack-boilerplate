@@ -1,45 +1,59 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const merge = require('webpack-merge');
+const parts = require('./webpack.parts');
 
-const config = {
-  // Entry
-  entry: {
-    app: './src/main.js',
-  },
+const publicPath = 'dist';
 
-  // Output
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[contenthash].js',
-  },
-
-  // DevServer
-  devServer: {
-    contentBase: './dist',
-  },
-
-  // Loaders
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
-      },
-    ],
-  },
-
-  // Plugins
-  plugins: [
-    new CleanWebpackPlugin(['dist']),
-    new HtmlWebpackPlugin({
-      title: 'Webpack 4 + Babel 7 Setup',
-    }),
-  ],
+const PATHS = {
+  app: path.join(__dirname, 'src'),
+  build: `${__dirname}/${publicPath}`,
 };
 
-// Exports
-module.exports = config;
+/**
+ * COMMON CONFIG
+ */
+const commonConfig = merge([
+  {
+    entry: {
+      app: './src/main.js',
+    },
+
+    output: {
+      path: PATHS.build,
+      filename: '[name].[contenthash].js',
+    },
+  },
+  parts.loadHtml(),
+]);
+
+/**
+ * PRODUCTION CONFIG
+ */
+const productionConfig = merge([
+  parts.loadJavaScript({ include: __dirname + '/', exclude: /node_modules/ }),
+  parts.clean(PATHS.build),
+]);
+
+/**
+ * DEVELOPMENT CONFIG
+ */
+const developmentConfig = merge([
+  parts.loadJavaScript({ include: __dirname + '/', exclude: /node_modules/ }),
+  parts.devServer({
+    // Customize host/port here if needed, like `PORT=3000 npm start`
+    host: process.env.HOST,
+    port: process.env.PORT,
+  }),
+]);
+
+/**
+ * EXPORT
+ */
+module.exports = mode => {
+
+  if (mode === 'production') {
+      return merge(commonConfig, productionConfig, { mode });
+  }
+
+  return merge(commonConfig, developmentConfig, { mode });
+}

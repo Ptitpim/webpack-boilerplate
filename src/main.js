@@ -1,9 +1,7 @@
-import '@babel/polyfill';
-
 const element = document.createElement('h1');
 element.innerText = 'Hello Webpack 4!';
 
-document.body.appendChild(element);
+document.getElementById('app').appendChild(element);
 
 
 // Test for polyfill bundling
