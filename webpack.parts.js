@@ -24,6 +24,19 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
   },
 });
 
+exports.loadSCSS = ({ include, exclude } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        include,
+        exclude,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+    ],
+  },
+});
+
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 exports.clean = path => ({
   plugins: [
