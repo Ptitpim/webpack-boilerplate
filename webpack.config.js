@@ -24,6 +24,7 @@ const commonConfig = merge([
     },
   },
   parts.loadHtml(),
+  parts.loadCSS(),
 ]);
 
 /**
