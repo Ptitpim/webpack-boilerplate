@@ -15,3 +15,7 @@ Compile and transpile Javascript with Babel and open [http://localhost:8080](htt
 
 Builds the app for production to the `dist` folder.<br>
 The build is minified and the filenames include the hashes.<br>
+
+### `npm run serve`
+
+Run a web server to browse the `/dist` folder.
