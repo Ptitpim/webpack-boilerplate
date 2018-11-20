@@ -24,17 +24,64 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
   },
 });
 
-exports.loadSCSS = ({ include, exclude } = {}) => ({
+exports.loadDevCSS = ({ include, exclude } = {}) => ({
   module: {
     rules: [
       {
         test: /\.scss$/,
         include,
         exclude,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
       },
     ],
   },
+});
+
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+exports.loadProdCSS = ({ include, exclude } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.(css|s[ac]ss)$/,
+        include,
+        exclude,
+        use: [
+          'style-loader',
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+          },
+          'sass-loader',
+        ],
+      },
+    ],
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+      chunkFilename: '[id].[contenthash].css',
+    }),
+  ],
+});
+
+exports.generateSourceMaps = () => ({
+  devtool: 'source-map',
 });
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');

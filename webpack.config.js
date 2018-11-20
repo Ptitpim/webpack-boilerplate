@@ -24,7 +24,6 @@ const commonConfig = merge([
     },
   },
   parts.loadHtml(),
-  parts.loadSCSS(),
 ]);
 
 /**
@@ -32,6 +31,7 @@ const commonConfig = merge([
  */
 const productionConfig = merge([
   parts.loadJavaScript({ include: __dirname + '/', exclude: /node_modules/ }),
+  parts.loadProdCSS(),
   parts.clean(PATHS.build),
 ]);
 
@@ -45,6 +45,8 @@ const developmentConfig = merge([
     host: process.env.HOST,
     port: process.env.PORT,
   }),
+  parts.loadDevCSS(),
+  parts.generateSourceMaps(),
 ]);
 
 /**
