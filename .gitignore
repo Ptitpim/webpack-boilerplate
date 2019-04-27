@@ -3,3 +3,5 @@ node_modules/
 
 # Output directory
 dist/
+
+.idea
