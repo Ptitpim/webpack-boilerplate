@@ -7,7 +7,7 @@ document.getElementById('app').appendChild(element);
 
 
 // Test for polyfill bundling
-var array = [1,2,3];
+const array = [1, 2, 3];
 Array.from(array).forEach(($item) => {
   console.log($item);
 });

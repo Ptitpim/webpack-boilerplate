@@ -69,4 +69,4 @@ module.exports = mode => {
   }
 
   return merge(commonConfig, developmentConfig, { mode });
-}
+};

@@ -5,7 +5,7 @@ exports.loadJavaScript = ({ include, exclude } = {}) => ({
         test: /\.(js|jsx)$/,
         include,
         exclude,
-        use: 'babel-loader',
+        use: ['babel-loader', 'eslint-loader'],
       },
     ],
   },
@@ -133,7 +133,7 @@ exports.devServer = ({ host, port } = {}) => ({
     stats: 'errors-only',
     host, // Defaults to `localhost`
     port, // Defaults to 8080
-    open: true,
+    open: false,
     overlay: false,
   },
 });
