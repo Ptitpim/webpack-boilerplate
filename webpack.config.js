@@ -31,17 +31,17 @@ const commonConfig = merge([
  */
 const productionConfig = merge([
   parts.clean(PATHS.build),
-  parts.loadJavaScript({ include: __dirname + '/', exclude: /node_modules/ }),
+  parts.loadJavaScript({ include: `${__dirname}/`, exclude: /node_modules/ }),
   parts.loadProdCSS(),
   parts.minifyCSS({
     options: {
       discardComments: {
-        removeAll: true
+        removeAll: true,
       },
       // Run cssnano in safe mode to avoid
       // potentially unsafe transformations.
-      safe: true
-    }
+      safe: true,
+    },
   }),
 ]);
 
@@ -49,7 +49,7 @@ const productionConfig = merge([
  * DEVELOPMENT CONFIG
  */
 const developmentConfig = merge([
-  parts.loadJavaScript({ include: __dirname + '/', exclude: /node_modules/ }),
+  parts.loadJavaScript({ include: `${__dirname}/`, exclude: /node_modules/ }),
   parts.devServer({
     // Customize host/port here if needed, like `PORT=3000 npm start`
     host: process.env.HOST,
@@ -62,10 +62,9 @@ const developmentConfig = merge([
 /**
  * EXPORT
  */
-module.exports = mode => {
-
+module.exports = (mode) => {
   if (mode === 'production') {
-      return merge(commonConfig, productionConfig, { mode });
+    return merge(commonConfig, productionConfig, { mode });
   }
 
   return merge(commonConfig, developmentConfig, { mode });
